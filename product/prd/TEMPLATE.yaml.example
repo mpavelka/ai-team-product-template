@@ -1,0 +1,21 @@
+# Product Requirement Document — schema reference.
+# Copy to product/prd/[short-desc].yaml and fill in.
+# Files ending in .example are ignored by the records-query skill.
+
+prd:
+  - id: PRD-000                       # unique, zero-padded, never reused
+    title: One line naming the requirement
+    priority: high                    # high | medium | low
+    description: >
+      Markdown. The user-visible problem, who has it, and what "solved" looks like.
+      Describes intent and acceptance criteria — not implementation.
+    status: active                    # active | deprecated
+    comments:
+      - date: 2026-07-31
+        commenter:
+          role: pm                    # pm | coder | architect | human
+          name: Only for human comments
+        comment: Free text.
+    links:
+      - type: GitHub Issue            # PRD | ADR | GitHub Issue
+        url: https://github.com/OWNER/REPO/issues/1

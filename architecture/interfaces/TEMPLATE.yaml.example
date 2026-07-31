@@ -1,0 +1,24 @@
+# Interfaces register — schema reference.
+# Copy to architecture/interfaces/interface-[name].yaml and fill in.
+# Files ending in .example are ignored by the records-query skill.
+
+interface:
+  - id: I000
+    name: auth-api
+    type: REST                        # REST | GraphQL | gRPC | queue | event | CLI
+    between: [browser, web-app]       # the two components this interface joins
+    module: auth
+    notes: >
+      How the interface works, and which ADR shaped it. Mention the transport, the
+      authentication mechanism, and any in-process vs. over-the-network detail that
+      affects callers.
+    security:
+      enumeration: >
+        Behaviours the interface MUST guarantee — identical responses for existing and
+        non-existing accounts, equalised timing, and so on.
+      rate_limits: see architecture/components/[component].md
+      tokens: >
+        Token format, storage (hashed at rest), lifetime, and single-use rules.
+    endpoints:
+      - POST /api/auth/register
+      - POST /api/auth/login

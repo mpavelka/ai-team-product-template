@@ -1,0 +1,38 @@
+<!--
+Components register — schema reference.
+Copy to architecture/components/[component-name].md and fill in.
+Files ending in .example are ignored by the records-query skill.
+
+The records-query skill reads the `# ` title as `name` and each `## ` section as a
+field: Used Technology -> technology, Specific Requirements -> requirements.
+A section whose lines are all `- ` bullets is returned as a list; otherwise as text.
+Keep the section names below unchanged so queries stay consistent across components.
+-->
+
+# component-name
+
+## Description
+
+What this component is responsible for, in two or three sentences. Stick to
+responsibility and boundaries — implementation detail belongs in the code.
+
+## Type
+
+Service | Library | Datastore | Worker | Gateway | External system
+
+## Used Technology
+
+- Language and runtime, with major version
+- Framework
+- Datastore or broker it embeds
+
+## Dependencies
+
+- other-component
+- external-system
+
+## Specific Requirements
+
+Operational and security requirements that constrain this component: availability
+expectations, rate limiting, data retention, secrets handling, PII classification.
+Reference the ADR that established each one.

@@ -1,0 +1,22 @@
+# Architecture Decision Record — schema reference.
+# Copy to architecture/adr/[YYYY-MM-DD]-[short-desc].yaml and fill in.
+# Files ending in .example are ignored by the records-query skill.
+
+adr:
+  - id: ADR-000                       # unique, zero-padded, never reused
+    status: proposed                  # proposed | accepted | superseded | rejected
+    date: 2026-07-31                  # ISO 8601, the date the record was created
+    short_description: One line, used in overviews
+    decision: >
+      Markdown. What was decided, and why — including the options considered and the
+      trade-offs accepted. Written so a reader in a year understands the constraints
+      that applied at the time.
+    comments:
+      - date: 2026-07-31
+        commenter:
+          role: architect             # pm | coder | architect | human
+          name: Only for human comments
+        comment: Free text.
+    links:
+      - type: PRD                     # PRD | ADR | GitHub Issue
+        url: product/prd/example.yaml

@@ -1,0 +1,25 @@
+adr:
+  - id: ADR-001
+    status: accepted
+    date: 2026-07-31
+    short_description: Record architecture decisions as YAML ADRs under architecture/adr
+    decision: >
+      Every architecturally significant decision is captured as a record in
+      `architecture/adr/[DATE]-[short-desc].yaml`, using the schema documented in
+      `architecture/adr/TEMPLATE.yaml.example`.
+
+      A decision is architecturally significant when it constrains how components are
+      built or connected: technology choices, boundaries between components, data
+      ownership, protocols, authentication and authorisation mechanisms, deployment
+      topology, and anything that would be expensive to reverse later.
+
+      Records are append-only. A decision that no longer holds is not edited or deleted —
+      its status moves to `superseded` and the new record links back to it. Status values
+      are `proposed`, `accepted`, `superseded` and `rejected`.
+
+      The Architect agent owns these records and changes them only via pull request.
+      Related PRDs, ADRs and GitHub issues are cross-referenced in `links`.
+    comments: []
+    links:
+      - type: ADR
+        url: architecture/adr/TEMPLATE.yaml.example
