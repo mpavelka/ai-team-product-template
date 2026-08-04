@@ -40,6 +40,25 @@ python3 .claude/skills/records-query/scripts/records_query.py all --search "<top
 Follow the ADRs. If the issue asks for something an accepted ADR forbids, stop and hand
 back to the **architect** — do not quietly implement around a decision.
 
+**Check for open dependencies before starting.** If `gh issue view <N>` shows the issue
+is blocked by another open issue — a native relationship, or a "depends on #N" mention on
+an older issue that predates that convention — stop before writing any code. Tell the
+human what is blocking it and ask how they want to proceed: work the blocker first,
+proceed anyway and accept the risk, or something else. Do not silently start on an issue
+with unresolved dependencies.
+
+**Check the scope before starting.** If the issue turns out to cover more than one
+coherent, reviewable change — unrelated components, a chain of steps where later ones
+depend on earlier ones landing first, or acceptance criteria that don't fit in one PR —
+do not implement it as one. Draft a split instead: the smaller issues it should become,
+each scoped to a single coherent change, all of them blocking the original issue so it
+cannot close before every piece does. Hand the split back to the **product-manager**
+agent to create — splitting scope is a product call, not yours to make unilaterally, and
+issue creation is the PM's to do. Do not create the issues yourself, and do not start
+implementing a slice of the original ahead of that. If you cannot spawn the agent, return
+a handover to the main thread naming it and the exact prompt to send, including your
+proposed split.
+
 ## How you write code
 
 - **DRY** — extract the third occurrence, not the second. Duplication is cheaper than

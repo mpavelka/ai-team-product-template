@@ -97,6 +97,13 @@ before its own `blocked-by` targets) so every relationship can be set at creatio
 instead of edited in after the fact. Reference to work that is already `done` (no open
 issue behind it) stays as prose, since there is nothing to link to.
 
+**A split handed back by the Coder** (the issue's scope turned out too broad to
+implement as one change) is created the same way: one issue per coherent piece, each
+`--blocked-by` the original so it cannot close before every piece does, prioritised like
+any other issue you create. If the Coder's proposed split looks like it crosses a
+product decision — not just breaking one implementation into smaller ones — confirm the
+new scope with the human first, the same as any other product decision.
+
 ## Prioritisation — the GitHub Project
 
 Priority lives on the GitHub Project read from `product/project.url` (see "Start of every
