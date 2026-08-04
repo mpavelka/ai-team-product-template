@@ -3,6 +3,12 @@ adr:
     status: accepted
     date: 2026-07-31
     short_description: Record architecture decisions as YAML ADRs under architecture/adr
+    key_points:
+      - Every architecturally significant decision is an ADR under `architecture/adr/`
+      - Significant means it constrains how components are built, connected or deployed
+      - Records are append-only — supersede, never edit or delete, and never reuse an id
+      - Status is one of `proposed`, `accepted`, `superseded`, `rejected`
+      - The Architect owns these records and changes them only via pull request
     decision: >
       Every architecturally significant decision is captured as a record in
       `architecture/adr/[DATE]-[short-desc].yaml`, using the schema documented in

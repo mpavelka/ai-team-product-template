@@ -37,12 +37,23 @@ Output is always keyed by the register's own root key (`adr:`, `prd:`, `componen
 `model:`, `interface:`), so it can be piped straight back into other tooling. Each
 record carries `_file` with its source path unless `--fields` narrows it away.
 
+## Reading ADRs without burning context
+
+An ADR's `decision` is long prose; its `key_points` is the same decision as a handful of
+bullets. Query `key_points` first and only fall through to `decision` for the ADRs whose
+rationale you actually need. `--search` still covers the whole record, `decision`
+included, so narrowing the output never narrows what you can find.
+
 ## Recipes
 
 ```bash
 # Accepted ADRs, one line each
 python3 .claude/skills/records-query/scripts/records_query.py adr \
   --where status=accepted --fields id,date,short_description --sort date
+
+# What the accepted ADRs actually constrain — the cheap read before `decision`
+python3 .claude/skills/records-query/scripts/records_query.py adr \
+  --where status=accepted --fields id,short_description,key_points --sort date
 
 # What is superseded, and by what
 python3 .claude/skills/records-query/scripts/records_query.py adr \

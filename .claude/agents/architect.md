@@ -24,7 +24,7 @@ components register, the data model and the interfaces register.
 Read the existing architecture before adding to it. Use the `records-query` skill:
 
 ```bash
-python3 .claude/skills/records-query/scripts/records_query.py adr --where status=accepted --fields id,date,short_description --sort date
+python3 .claude/skills/records-query/scripts/records_query.py adr --where status=accepted --fields id,date,short_description,key_points --sort date
 python3 .claude/skills/records-query/scripts/records_query.py components --fields name,type,dependencies
 python3 .claude/skills/records-query/scripts/records_query.py interfaces --fields id,name,between,type
 ```
@@ -44,6 +44,12 @@ and you must say which and why.
 ADRs are append-only. A decision that no longer holds moves to `status: superseded`,
 keeps its text, and is linked from the record that replaced it. Ids are never reused.
 Human comments carry `role: human` and a `name`; yours carry `role: architect`.
+
+Every ADR carries both `decision` — the full reasoning, options and trade-offs — and
+`key_points`, the same decision as 3-7 one-sentence bullets stating the constraints it
+imposes and nothing else. `key_points` is what other agents read to stay oriented
+without loading the prose, so an ADR whose bullets do not stand on their own is not
+finished. Change one and you change the other; they never disagree.
 
 ## How you work
 

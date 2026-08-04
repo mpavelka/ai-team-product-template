@@ -20,6 +20,9 @@ adr:
     status: accepted
     date: 2026-01-15
     short_description: Use PostgreSQL as the primary datastore
+    key_points:
+      - PostgreSQL is the single system of record
+      - Read replicas are out of scope for now
     decision: >
       We pick PostgreSQL because the data is relational.
 
@@ -111,6 +114,14 @@ class TestMiniYaml(unittest.TestCase):
         self.assertEqual(data["adr"][0]["comments"][0]["commenter"]["name"], "Miloslav")
         self.assertEqual(data["adr"][0]["links"][0]["type"], "PRD")
 
+    def test_scalar_bullet_list_under_a_record(self):
+        data = self.parse(ADR_YAML)
+        self.assertEqual(
+            data["adr"][0]["key_points"],
+            ["PostgreSQL is the single system of record", "Read replicas are out of scope for now"],
+        )
+        self.assertNotIn("key_points", data["adr"][1])
+
     def test_inline_comment_stripped_but_url_kept(self):
         data = self.parse(ADR_YAML)
         self.assertEqual(data["adr"][0]["comments"][0]["comment"], "Agreed.")
@@ -181,6 +192,11 @@ class TestOutput(Fixture):
         self.assertIn("id: ADR-001", out)
         self.assertNotIn("decision", out)
         self.assertNotIn("_file", out)
+
+    def test_key_points_projected_without_the_decision_prose(self):
+        out = self.cli("adr", "--fields", "id,key_points")
+        self.assertIn("- PostgreSQL is the single system of record", out)
+        self.assertNotIn("relational", out)
 
     def test_dotted_field_selection(self):
         out = self.cli("adr", "--id", "ADR-001", "--fields", "id,links.url")
