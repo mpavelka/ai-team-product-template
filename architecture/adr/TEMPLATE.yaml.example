@@ -7,10 +7,15 @@ adr:
     status: proposed                  # proposed | accepted | superseded | rejected
     date: 2026-07-31                  # ISO 8601, the date the record was created
     short_description: One line, used in overviews
+    key_points:                         # 3-7 bullets, the decision's outcomes only
+      - One outcome per bullet, a single sentence, no rationale
+      - Written so an agent can act on it without reading `decision`
+      - State the constraint, not the discussion that produced it
     decision: >
       Markdown. What was decided, and why — including the options considered and the
       trade-offs accepted. Written so a reader in a year understands the constraints
-      that applied at the time.
+      that applied at the time. `key_points` summarises this field; the two never
+      disagree, and updating one means updating the other.
     comments:
       - date: 2026-07-31
         commenter:
