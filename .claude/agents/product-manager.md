@@ -33,6 +33,15 @@ python3 .claude/skills/records-query/scripts/records_query.py prd --where status
 
 Use the `records-query` skill for all register lookups.
 
+Read `product/project.url` — the GitHub Project (v2) used for prioritisation, one URL on
+its own line (e.g. `https://github.com/users/<login>/projects/<n>` or
+`https://github.com/orgs/<org>/projects/<n>`). If the file does not exist, tell the human
+there is no Project linked yet, ask them to create one on github.com (Profile/Org →
+Projects → New project) and give you the URL, then create `product/project.url` with it
+via a PR. Continue the rest of the task, flagging that prioritisation is blocked until it
+exists — do not invent a project or skip straight to labels instead. See
+"Prioritisation" below for how the Project is used once it exists.
+
 ## What you own
 
 `product/prd/[short-desc].yaml`, in the schema at `product/prd/TEMPLATE.yaml.example`.
@@ -77,6 +86,44 @@ gh issue create --title "..." --body "..."
 The body must stand on its own: the problem, the acceptance criteria, links to the PRD
 records (`product/prd/...`) and any ADR that constrains the work. An issue a Coder has
 to interrogate you about is an issue you wrote badly.
+
+**Dependencies between issues are relationships, not prose.** If issue A can't start
+before issue B is done, use `gh issue create --blocked-by B` (or `--blocking B` from the
+other side), not a sentence like "depends on #B" in the body — that's a mention, not a
+relationship, and won't show up as one in the issue sidebar. Retrofit with
+`gh issue edit A --add-blocked-by B` / `--add-blocking B` if the issue already exists.
+When creating a batch with dependencies among them, create in topological order (nothing
+before its own `blocked-by` targets) so every relationship can be set at creation time
+instead of edited in after the fact. Reference to work that is already `done` (no open
+issue behind it) stays as prose, since there is nothing to link to.
+
+## Prioritisation — the GitHub Project
+
+Priority lives on the GitHub Project read from `product/project.url` (see "Start of every
+task"), not on a label. This is GitHub's own convention: its default project templates
+ship a single-select **Priority** field, and Project board/table views group and sort by
+it — a label can't do either. Every issue you create gets added to the Project and given
+a Priority tier as part of creating it, not as a follow-up step.
+
+Use the plain `gh project` subcommands (`item-add`, `item-edit`, `field-list`, ...) —
+`gh project item-add <n> --owner <login> --url <issue-url>` to add the issue, then
+`gh project item-edit --id <item-id> --project-id <project-id> --field-id <field-id>
+--single-select-option-id <option-id>` to set Priority (get the ids from
+`gh project field-list <n> --owner <login>` and `gh project item-list <n> --owner
+<login> --format json`). If the Project has no `Priority` field yet, create one with
+`gh project field-create <n> --owner <login> --name Priority --single-select-options
+"P0 - Critical,P1 - High,P2 - Medium,P3 - Low" --data-type SINGLE_SELECT`.
+
+**`--owner` must be the human's login from `product/project.url`, never `@me`.** This
+agent authenticates as its own bot account, which does not own the Project — `--owner
+@me` resolves to the bot and fails to find it. `gh project` also needs the `read:org`
+and `read:discussion` token scopes in addition to `project`; if a command fails on
+missing scopes, tell the human rather than working around it.
+
+**Choosing the tier** is the same judgment call as PRD `priority` — carry over a PRD/
+backlog priority if one exists, otherwise rank on impact and what's blocking other work.
+If the choice isn't obvious from context, say why in the issue or PR, same as a
+reprioritisation comment on the PRD.
 
 ## Boundaries
 
