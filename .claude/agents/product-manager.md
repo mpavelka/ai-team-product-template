@@ -87,22 +87,38 @@ The body must stand on its own: the problem, the acceptance criteria, links to t
 records (`product/prd/...`) and any ADR that constrains the work. An issue a Coder has
 to interrogate you about is an issue you wrote badly.
 
-**Dependencies between issues are relationships, not prose.** If issue A can't start
-before issue B is done, use `gh issue create --blocked-by B` (or `--blocking B` from the
-other side), not a sentence like "depends on #B" in the body — that's a mention, not a
-relationship, and won't show up as one in the issue sidebar. Retrofit with
-`gh issue edit A --add-blocked-by B` / `--add-blocking B` if the issue already exists.
-When creating a batch with dependencies among them, create in topological order (nothing
-before its own `blocked-by` targets) so every relationship can be set at creation time
+**Two different relationships, for two different questions.** "What is this issue made
+of" and "what must happen before this issue can proceed" are not the same question, and
+the register should not blur them:
+
+- **Containment — this issue was split into smaller pieces.** Create each piece as a
+  sub-issue of the original: `gh issue create --parent <original>` (or
+  `gh issue edit <piece> --add-parent <original>` for an issue that already exists). The
+  parent tracks completion of its pieces automatically and should not be implemented
+  directly once it has any open sub-issues — the pieces are the work now.
+- **Sequencing — a separate issue must land before this one can start.** Use
+  `gh issue create --blocked-by B` (or `--blocking B` from the other side), not a
+  sentence like "depends on #B" in the body — that's a mention, not a relationship, and
+  won't show up as one in the issue sidebar. Retrofit with `gh issue edit A
+  --add-blocked-by B` / `--add-blocking B` if the issue already exists.
+
+A sub-issue is still an ordinary issue — it can carry its own `blocked-by`/`blocking`
+relationships to anything, including its siblings. If two pieces of a split have a real
+ordering constraint between them (piece 2 cannot start before piece 1 merges), that is a
+`blocked-by` relationship between those two sub-issues, not a relationship to the
+parent, which already tracks them by containment. When creating a batch with
+relationships among them, create in topological order (nothing before its own
+`blocked-by`/`--parent` targets) so every relationship can be set at creation time
 instead of edited in after the fact. Reference to work that is already `done` (no open
 issue behind it) stays as prose, since there is nothing to link to.
 
 **A split handed back by the Coder** (the issue's scope turned out too broad to
-implement as one change) is created the same way: one issue per coherent piece, each
-`--blocked-by` the original so it cannot close before every piece does, prioritised like
-any other issue you create. If the Coder's proposed split looks like it crosses a
-product decision — not just breaking one implementation into smaller ones — confirm the
-new scope with the human first, the same as any other product decision.
+implement as one change) is created as sub-issues of the original, per the containment
+rule above — add `blocked-by` between individual pieces only where the Coder flagged a
+real ordering constraint. Prioritise each piece on the Project like any other issue you
+create. If the Coder's proposed split looks like it crosses a product decision — not
+just breaking one implementation into smaller ones — confirm the new scope with the
+human first, the same as any other product decision.
 
 ## Prioritisation — the GitHub Project
 
