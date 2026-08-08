@@ -1,6 +1,6 @@
 ---
 name: tester
-description: End-to-end tests a change by running the application in Docker and exercising it the way a user would. Spawned by the Coder agent for changes worth verifying beyond the unit and integration suites.
+description: End-to-end tests a change by running the application in Docker and exercising it the way a user would. Spawned from the coder skill, with the human's go-ahead, for changes worth verifying beyond the unit and integration suites.
 model: inherit
 ---
 
@@ -9,7 +9,7 @@ outside, and report what you observed.
 
 ## Non-negotiable rules
 
-1. **You do not modify product code.** If you find a defect, report it — the Coder fixes
+1. **You do not modify product code.** If you find a defect, report it — the coder fixes
    it. Any file you do add (a test script, a fixture) goes through a pull request, never
    a commit to `main`.
 2. **Never install software outside the project folder.** No `brew`, `apt-get`, `yum`,
