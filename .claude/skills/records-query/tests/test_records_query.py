@@ -58,6 +58,36 @@ prd:
         url: https://example.test/adr/2
 """
 
+QUESTIONS_YAML = """\
+questions:
+  - id: Q-001
+    status: open
+    created_date: 2026-03-01
+    updated_date: 2026-03-01
+    question: >
+      Which payment provider should we integrate with first?
+    comments:
+      - date: 2026-03-02
+        commenter:
+          role: human
+          name: Miloslav
+        comment: Leaning towards Stripe.
+    links:
+      - type: GitHub Issue
+        url: https://example.test/issues/9
+  - id: Q-002
+    status: answered
+    created_date: 2026-03-03
+    updated_date: 2026-03-10
+    question: >
+      Should the session cookie be httpOnly?
+    answer: >
+      Yes, per ADR-002.
+    links:
+      - type: ADR
+        url: https://example.test/adr/2
+"""
+
 COMPONENT_MD = """\
 # web-app
 
@@ -91,9 +121,11 @@ class Fixture(unittest.TestCase):
         (self.root / "architecture/adr").mkdir(parents=True)
         (self.root / "architecture/components").mkdir(parents=True)
         (self.root / "product/prd").mkdir(parents=True)
+        (self.root / "product/questions").mkdir(parents=True)
         (self.root / "architecture/adr/decisions.yaml").write_text(ADR_YAML)
         (self.root / "product/prd/password-reset.yaml").write_text(PRD_YAML)
         (self.root / "architecture/components/web-app.md").write_text(COMPONENT_MD)
+        (self.root / "product/questions/open-questions.yaml").write_text(QUESTIONS_YAML)
         self.addCleanup(self._tmp.cleanup)
 
     def cli(self, *argv) -> str:
@@ -185,6 +217,19 @@ class TestFilters(Fixture):
         with self.assertRaises(rq.RecordError):
             rq.run(["adr", "--where", "nonsense", "--root", str(self.root)])
 
+    def test_questions_where_status(self):
+        out = self.cli("questions", "--where", "status=open")
+        self.assertIn("Q-001", out)
+        self.assertNotIn("Q-002", out)
+        out = self.cli("questions", "--where", "status=answered")
+        self.assertIn("Q-002", out)
+        self.assertNotIn("Q-001", out)
+
+    def test_questions_dotted_path_across_lists(self):
+        out = self.cli("questions", "--where", "comments.commenter.role=human")
+        self.assertIn("Q-001", out)
+        self.assertNotIn("Q-002", out)
+
 
 class TestOutput(Fixture):
     def test_field_selection_is_strict(self):
@@ -214,8 +259,15 @@ class TestOutput(Fixture):
 
     def test_all_registers_grouped(self):
         out = self.cli("all")
-        for root_key in ("adr:", "prd:", "components:"):
+        for root_key in ("adr:", "prd:", "components:", "questions:"):
             self.assertIn(root_key, out)
+
+    def test_questions_field_selection(self):
+        out = self.cli("questions", "--id", "Q-001", "--fields", "id,status,question")
+        self.assertIn("id: Q-001", out)
+        self.assertIn("status: open", out)
+        self.assertIn("payment provider", out)
+        self.assertNotIn("_file", out)
 
     def test_sort(self):
         out = self.cli("adr", "--sort", "date", "--fields", "id")

@@ -1,11 +1,11 @@
 ---
 name: records-query
-description: Filter, search and present the project's decision records — ADRs (architecture/adr), PRDs (product/prd), the components register (architecture/components), the data model (architecture/data-model) and the interfaces register (architecture/interfaces). Use whenever a question asks what was decided, what is required, which components or interfaces exist, or what an entity looks like — e.g. "which ADRs cover auth?", "what's still active in the PRD?", "which interfaces touch the browser?", "show me the User entity". Prefer this over grepping the YAML by hand.
+description: Filter, search and present the project's decision records — ADRs (architecture/adr), PRDs (product/prd), the components register (architecture/components), the data model (architecture/data-model), the interfaces register (architecture/interfaces) and open questions (product/questions). Use whenever a question asks what was decided, what is required, which components or interfaces exist, what an entity looks like, or what questions are still open — e.g. "which ADRs cover auth?", "what's still active in the PRD?", "which interfaces touch the browser?", "show me the User entity", "what open questions do we have?". Prefer this over grepping the YAML by hand.
 ---
 
 # Query the decision records
 
-All five registers are queried through one script:
+All six registers are queried through one script:
 
 `.claude/skills/records-query/scripts/records_query.py`
 
@@ -18,7 +18,7 @@ built-in parser handles these files. Never install packages to make it run.
 python3 .claude/skills/records-query/scripts/records_query.py <register> [options]
 ```
 
-Registers: `adr`, `prd`, `components`, `data-model`, `interfaces`, or `all`.
+Registers: `adr`, `prd`, `components`, `data-model`, `interfaces`, `questions`, or `all`.
 
 | Option | Effect |
 | --- | --- |
@@ -34,8 +34,9 @@ Registers: `adr`, `prd`, `components`, `data-model`, `interfaces`, or `all`.
 | `--root PATH` | Project root. Defaults to `$CLAUDE_PROJECT_DIR`, the git root, or cwd. |
 
 Output is always keyed by the register's own root key (`adr:`, `prd:`, `components:`,
-`model:`, `interface:`), so it can be piped straight back into other tooling. Each
-record carries `_file` with its source path unless `--fields` narrows it away.
+`model:`, `interface:`, `questions:`), so it can be piped straight back into other
+tooling. Each record carries `_file` with its source path unless `--fields` narrows it
+away.
 
 ## Reading ADRs without burning context
 
@@ -74,6 +75,10 @@ python3 .claude/skills/records-query/scripts/records_query.py interfaces \
 # An entity's fields and relations
 python3 .claude/skills/records-query/scripts/records_query.py data-model \
   --where entity=User --fields entity,table,fields,relations
+
+# Open questions, oldest first
+python3 .claude/skills/records-query/scripts/records_query.py questions \
+  --where status=open --fields id,question,created_date --sort created_date
 
 # Everything mentioning password reset, anywhere
 python3 .claude/skills/records-query/scripts/records_query.py all --search "password reset"
