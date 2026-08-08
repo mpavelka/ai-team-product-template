@@ -41,6 +41,7 @@ Nobody skips a step by deciding something that belongs to someone else.
 | Components | `architecture/components/[name].md` | `architecture/components/TEMPLATE.md.example` |
 | Data model | `architecture/data-model/model-[name].yaml` | `architecture/data-model/TEMPLATE.yaml.example` |
 | Interfaces | `architecture/interfaces/interface-[name].yaml` | `architecture/interfaces/TEMPLATE.yaml.example` |
+| Questions | `product/questions/[ID]-[DATE]-[slug].yaml` | `product/questions/TEMPLATE.yaml.example` |
 
 Records are append-only: supersede and deprecate, never delete, never reuse an id.
 Files ending in `.example` are schema references and are excluded from queries.

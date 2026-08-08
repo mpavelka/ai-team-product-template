@@ -1,0 +1,33 @@
+# Open Question — schema reference.
+# Copy to product/questions/[ID]-[DATE]-[slug].yaml and fill in, e.g.
+# product/questions/Q-001-2026-08-08-payment-provider-choice.yaml
+# Files ending in .example are ignored by the records-query skill.
+#
+# Unlike PRD/ADR, this register is not append-only: editing `status`, `answer` and
+# `answer_detail` in place as the question gets answered is the intended usage — bump
+# `updated_date` whenever you do. `id` is still never reused and records are never
+# deleted.
+
+questions:
+  - id: Q-000                          # unique, zero-padded, never reused
+    status: open                       # open | answered
+    created_date: 2026-07-31           # ISO 8601, the date the question was raised
+    updated_date: 2026-07-31           # ISO 8601, bumped whenever this record changes
+    question: >
+      One paragraph. The question itself, phrased so anyone can answer it without
+      further context.
+    question_detail: >
+      Markdown. Longer background and context for the question, if needed. Optional.
+    answer: >
+      One paragraph. The answer, once one exists. Leave empty while status is open.
+    answer_detail: >
+      Markdown. Longer explanation or context for the answer, if needed. Optional.
+    comments:
+      - date: 2026-07-31
+        commenter:
+          role: pm                     # pm | coder | architect | human
+          name: Only for human comments
+        comment: Free text.
+    links:
+      - type: GitHub Issue              # PRD | ADR | GitHub Issue | Question
+        url: https://github.com/OWNER/REPO/issues/1

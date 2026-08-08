@@ -7,6 +7,7 @@ Registers covered:
   components   architecture/components/*.md       (components register)
   data-model   architecture/data-model/*.yaml     (entities)
   interfaces   architecture/interfaces/*.yaml     (interfaces register)
+  questions    product/questions/*.yaml           (open questions)
 
 Output is YAML (or JSON with --format json).
 
@@ -54,6 +55,12 @@ REGISTERS = {
         "root": "interface",
         "kind": "yaml",
     },
+    "questions": {
+        "dir": "product/questions",
+        "glob": "*.yaml",
+        "root": "questions",
+        "kind": "yaml",
+    },
 }
 
 ALIASES = {
@@ -66,6 +73,7 @@ ALIASES = {
     "data_model": "data-model",
     "entities": "data-model",
     "interface": "interfaces",
+    "question": "questions",
 }
 
 
@@ -543,7 +551,7 @@ def find_root(explicit: str | None) -> Path:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="records_query.py",
-        description="Filter, search and present ADR / PRD / component / data-model / interface records.",
+        description="Filter, search and present ADR / PRD / component / data-model / interface / question records.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "examples:\n"
