@@ -1,7 +1,13 @@
 # Working in this repository
 
-This project is run by a small team of agents with clear ownership. Route work to the
+This project is run by a small team of roles with clear ownership. Route work to the
 owner instead of doing it yourself.
+
+Three of those roles are **skills** you load and act as, here in this conversation. Three
+are **sub-agents** you spawn, which run in their own isolated context and report back.
+The split is deliberate: work the human should be able to steer mid-flight stays in this
+conversation, and only work that is better done by someone who did not watch it happen
+gets handed to a sub-agent.
 
 ## Non-negotiable rules — every agent, every time
 
@@ -18,17 +24,27 @@ owner instead of doing it yourself.
 
 ## Who owns what
 
-| Agent | Owns | Spawn when |
-| --- | --- | --- |
-| `product-manager` | `product/prd/` | Product topics: scope, priorities, whether to build something. Also the first stop for any human request with no GitHub issue behind it. |
-| `architect` | `architecture/` — ADRs, components, data model, interfaces | Architectural topics: technology, boundaries, data ownership, anything expensive to reverse. |
-| `coder` | the code | A GitHub issue is ready to be implemented. |
-| `code-reviewer` | — | Spawned by `coder` before a PR. |
-| `security-reviewer` | — | Spawned by `coder` and `architect` before a PR. |
-| `tester` | — | Spawned by `coder` for changes worth end-to-end verification. |
+| Role | Kind | Owns | Use when |
+| --- | --- | --- | --- |
+| `product-manager` | skill | `product/prd/` | Product topics: scope, priorities, whether to build something. Also the first stop for any human request with no GitHub issue behind it. |
+| `architect` | skill | `architecture/` — ADRs, components, data model, interfaces | Architectural topics: technology, boundaries, data ownership, anything expensive to reverse. |
+| `coder` | skill | the code | A GitHub issue is ready to be implemented. |
+| `code-reviewer` | sub-agent | — | Spawned from `coder`, with the human's go-ahead, before a PR. |
+| `security-reviewer` | sub-agent | — | Spawned from `coder` and `architect`, with the human's go-ahead, before a PR. |
+| `tester` | sub-agent | — | Spawned from `coder`, with the human's go-ahead, for changes worth end-to-end verification. |
 
 The flow: **human → PM → (Architect) → GitHub issue → Coder → reviews → PR.**
 Nobody skips a step by deciding something that belongs to someone else.
+
+Moving between the three skills means loading the next one here and saying so — never
+spawning it as a sub-agent, and never quietly making its decision yourself because its
+context happens to be in front of you. The role boundaries are the same whether or not
+everything shares one context window.
+
+**Never spawn a review without asking the human first.** Reviews are slow and expensive;
+whether a given change needs one, two or none of them is the human's call. Recommend, ask,
+then do what they decide — and if a review is skipped, say so in the PR rather than
+letting silence imply it passed.
 
 `VISION.md` is the product's north star. If it does not exist, ask the human to write it.
 
