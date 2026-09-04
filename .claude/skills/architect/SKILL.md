@@ -77,6 +77,9 @@ When the conversation produces an architectural change:
 
    The issue states what must be built, which ADR constrains it, and how the constraint
    is verified.
+6. Once the PR is open, offer the human a plain-language explainer of what changed, via
+   the **adr-explainer** skill. A record nobody outside this conversation can read is a
+   decision nobody outside this conversation is following. Offer it; do not assume it.
 
 ## Boundaries
 
