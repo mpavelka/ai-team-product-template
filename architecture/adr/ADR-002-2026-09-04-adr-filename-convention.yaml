@@ -1,0 +1,65 @@
+adr:
+  - id: ADR-002
+    status: accepted
+    date: 2026-09-04
+    short_description: ADR filenames follow [ID]-[DATE]-[short-desc].yaml, matching the Questions register
+    key_points:
+      - ADR filenames are `architecture/adr/[ID]-[DATE]-[short-desc].yaml`
+      - Example — `architecture/adr/ADR-001-2026-07-31-record-architecture-decisions.yaml`
+      - This supersedes the `[DATE]-[short-desc].yaml` filename convention set by ADR-001
+      - No schema change — the `id` field already existed in every ADR, only the filename changes
+      - Existing ADR files are renamed to the new convention as part of this decision
+      - Mirrors the convention already in use by `product/questions/`
+    decision: >
+      ADR filenames change from `architecture/adr/[DATE]-[short-desc].yaml` to
+      `architecture/adr/[ID]-[DATE]-[short-desc].yaml`, e.g.
+      `architecture/adr/ADR-001-2026-07-31-record-architecture-decisions.yaml`. This
+      supersedes the filename clause of ADR-001
+      (`architecture/adr/ADR-001-2026-07-31-record-architecture-decisions.yaml`); every
+      other part of that decision — that architecturally significant changes are
+      captured as ADRs, that records are append-only, and that the Architect owns them —
+      is unaffected and still holds.
+
+      The `id` field (`ADR-001`, `ADR-002`, ...) already existed in the ADR schema
+      (`architecture/adr/TEMPLATE.yaml.example`) but was not used in the filename. Two
+      options were considered:
+
+      1. Keep the date-only convention. It sorts files chronologically in a directory
+         listing without opening them, but two ADRs proposed or backdated to the same
+         day collide unless the short description is made to disambiguate, and there is
+         no stable, greppable id in the filename itself — you have to open the file to
+         learn which id a given decision is.
+
+      2. Prefix with the id, as this ADR now does. This gives every ADR a filename that
+         is unique by construction (ids are never reused), makes `grep`/`ls` and links
+         in other records (`links: - type: ADR, url: architecture/adr/ADR-00X-...`)
+         resolve to a predictable path, and — since ids are assigned in the order
+         records are created — the directory listing still sorts in approximately
+         chronological order, so little is lost in practice. It also brings ADRs in
+         line with `product/questions/`, which already uses the `[ID]-[DATE]-[slug]`
+         pattern; one convention across the two date-stamped, id-bearing registers is
+         one fewer thing an agent has to remember.
+
+      Option 2 was chosen: the collision risk and lack of a stable filename-level
+      identifier in option 1 outweigh the minor loss of pure lexicographic date sorting,
+      and consistency with the Questions register is a real, if small, ongoing benefit
+      since the same agents maintain both.
+
+      All existing ADR files are renamed to the new convention as part of this decision
+      rather than left mixed; `architecture/adr/TEMPLATE.yaml.example`, `CLAUDE.md` and
+      `.claude/skills/architect/SKILL.md` are updated to document it. The
+      `records-query` skill's script
+      (`.claude/skills/records-query/scripts/records_query.py`) globs
+      `architecture/adr/*.yaml` without assuming a filename shape, so it needed no
+      change.
+    comments:
+      - date: 2026-09-04
+        commenter:
+          role: human
+          name: Miloslav Pavelka
+        comment: Requested via chat — align ADR filenames with the Questions register's [ID]-[DATE]-[slug] convention.
+    links:
+      - type: ADR
+        url: architecture/adr/ADR-001-2026-07-31-record-architecture-decisions.yaml
+      - type: ADR
+        url: architecture/adr/TEMPLATE.yaml.example

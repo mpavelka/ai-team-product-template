@@ -1,5 +1,6 @@
 # Architecture Decision Record — schema reference.
-# Copy to architecture/adr/[YYYY-MM-DD]-[short-desc].yaml and fill in.
+# Copy to architecture/adr/[ID]-[DATE]-[short-desc].yaml and fill in, e.g.
+# architecture/adr/ADR-001-2026-07-31-record-architecture-decisions.yaml
 # Files ending in .example are ignored by the records-query skill.
 
 adr:

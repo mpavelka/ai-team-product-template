@@ -1,6 +1,6 @@
 adr:
   - id: ADR-001
-    status: accepted
+    status: superseded
     date: 2026-07-31
     short_description: Record architecture decisions as YAML ADRs under architecture/adr
     key_points:
@@ -25,7 +25,19 @@ adr:
 
       The Architect agent owns these records and changes them only via pull request.
       Related PRDs, ADRs and GitHub issues are cross-referenced in `links`.
-    comments: []
+    comments:
+      - date: 2026-09-04
+        commenter:
+          role: architect
+        comment: >
+          Superseded by ADR-002: the filename clause in this record's `decision`
+          (`architecture/adr/[DATE]-[short-desc].yaml`) no longer matches the naming
+          convention in use. The rest of this decision — every architecturally
+          significant change gets an ADR, append-only records, Architect ownership —
+          still holds. Text left unchanged per the append-only rule this ADR itself
+          established.
     links:
       - type: ADR
         url: architecture/adr/TEMPLATE.yaml.example
+      - type: ADR
+        url: architecture/adr/ADR-002-2026-09-04-adr-filename-convention.yaml
