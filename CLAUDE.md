@@ -53,7 +53,7 @@ letting silence imply it passed.
 | Register | Location | Schema |
 | --- | --- | --- |
 | PRD | `product/prd/[short-desc].yaml` | `product/prd/TEMPLATE.yaml.example` |
-| ADR | `architecture/adr/[YYYY-MM-DD]-[short-desc].yaml` | `architecture/adr/TEMPLATE.yaml.example` |
+| ADR | `architecture/adr/[ID]-[DATE]-[short-desc].yaml` | `architecture/adr/TEMPLATE.yaml.example` |
 | Components | `architecture/components/[name].md` | `architecture/components/TEMPLATE.md.example` |
 | Data model | `architecture/data-model/model-[name].yaml` | `architecture/data-model/TEMPLATE.yaml.example` |
 | Interfaces | `architecture/interfaces/interface-[name].yaml` | `architecture/interfaces/TEMPLATE.yaml.example` |
