@@ -49,8 +49,9 @@ gating acceptance.
 Every record worth explaining turns on one load-bearing fact. Name it in a sentence.
 
 The test: **if that fact were false, would the decision change?** If yes, it is the spine.
-In ADR-011 it is "SES sandbox status belongs to an AWS account, not to an IAM user" —
-everything else in six hundred lines follows from it.
+In the worked example under `reference/` it is "the email sandbox restriction belongs to
+the AWS account, not to the individual API key" — everything else on the page follows
+from it.
 
 Records usually flag their own spine with a heading like `## The constraint that settles
 it`, or with a comment that verifies one premise more carefully than the rest. If you
@@ -145,6 +146,20 @@ first time should not have to reconstruct the decision from a diff.
 
 Then, in the chat rather than on the page, tell the human which sections moved and why.
 That is what they actually need after an amendment lands.
+
+## Reference
+
+`reference/example-explainer.html` is a full worked example, built around a fictional
+decision about dev vs. prod email delivery — illustrative, not a real record from this
+project. Read it before your first explainer. What to look at:
+
+- the three-line short-version box, and how little it tries to say
+- how `the constraint` section builds to the side-by-side figure, and how the figcaption
+  carries the facts that did not fit in the drawing
+- the options block — the rejected ones get more words than the chosen one
+- `still open`, which lists things that are wrong or missing today
+- the footer, which says plainly that this page is a worked example rather than a real
+  record — a real explainer's footer names the record's file path instead
 
 ## What this skill does not do
 
