@@ -1,0 +1,402 @@
+<title>Where Dev Mail Goes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --ground: #ebeef0;
+    --surface: #ffffff;
+    --surface-2: #f4f6f7;
+    --ink: #131c24;
+    --muted: #5a6874;
+    --line: #c9d2d7;
+    --accent: #2f4e8a;
+    --live: #a8452b;
+    --sink: #2c6b5b;
+    --chip: #e3e9f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #10161b;
+      --surface: #192127;
+      --surface-2: #1f282f;
+      --ink: #e4eaee;
+      --muted: #94a5b0;
+      --line: #33414b;
+      --accent: #86a6e0;
+      --live: #e0916f;
+      --sink: #74bfa6;
+      --chip: #24313f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #10161b;
+    --surface: #192127;
+    --surface-2: #1f282f;
+    --ink: #e4eaee;
+    --muted: #94a5b0;
+    --line: #33414b;
+    --accent: #86a6e0;
+    --live: #e0916f;
+    --sink: #74bfa6;
+    --chip: #24313f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 46rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.25rem;
+  }
+
+  /* ---- masthead ---- */
+  .masthead { display: flex; flex-direction: column; gap: 1rem; }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  h1 {
+    font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 3.1rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 1.18rem;
+    color: var(--muted);
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  /* ---- the short version ---- */
+  .tldr {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 3px;
+    padding: 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .tldr p { margin: 0; font-size: 1.1rem; }
+
+  /* ---- sections ---- */
+  section { display: flex; flex-direction: column; gap: 0.9rem; }
+  h2 {
+    font-family: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  section > .kicker { margin-bottom: -0.5rem; }
+  p { margin: 0; }
+  p + p { margin-top: -0.15rem; }
+  strong { font-weight: 600; }
+
+  code, .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.86em;
+  }
+  code {
+    background: var(--chip);
+    padding: 0.08em 0.36em;
+    border-radius: 3px;
+  }
+
+  ul { margin: 0; padding-left: 1.15rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  li::marker { color: var(--muted); }
+
+  /* ---- options ---- */
+  .options { display: flex; flex-direction: column; gap: 0.6rem; }
+  .option {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--line);
+    border-radius: 3px;
+    padding: 0.95rem 1.1rem;
+    display: grid;
+    grid-template-columns: 1.6rem 1fr;
+    gap: 0.1rem 0.7rem;
+    align-items: baseline;
+  }
+  .option.chosen { border-left-color: var(--sink); }
+  .option .letter {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--muted);
+  }
+  .option.chosen .letter { color: var(--sink); }
+  .option .headline { font-weight: 600; }
+  .option .note { grid-column: 2; color: var(--muted); font-size: 0.96rem; }
+  .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sink);
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    padding: 0.08em 0.4em;
+    margin-left: 0.5rem;
+    vertical-align: 0.14em;
+    white-space: nowrap;
+  }
+
+  /* ---- figures ---- */
+  figure {
+    margin: 0.4rem 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 1.4rem 1.2rem 1.1rem;
+    overflow-x: auto;
+  }
+  figure svg { display: block; width: 100%; min-width: 520px; height: auto; }
+  figcaption {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.94rem;
+    line-height: 1.5;
+  }
+  .box { fill: var(--surface-2); stroke: var(--line); stroke-width: 1; }
+  .frame { fill: none; stroke: var(--line); stroke-width: 1; }
+  .lbl { font-family: "IBM Plex Mono", monospace; font-size: 12px; fill: var(--ink); }
+  .lbl-sm { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; fill: var(--muted); }
+  .lbl-hd { font-family: "Bricolage Grotesque", sans-serif; font-weight: 700; font-size: 12.5px; fill: var(--ink); }
+  .flow { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+  .flow-dead { stroke: var(--live); stroke-width: 1.4; fill: none; stroke-dasharray: 4 4; }
+  .ring { fill: none; stroke: var(--live); stroke-width: 1.4; stroke-dasharray: 5 4; }
+  .seam { stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 3 4; }
+
+  /* ---- risk panel ---- */
+  .panel {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 1.3rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .panel h3 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 1.2rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  a { color: var(--accent); }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="kicker">worked example &middot; for the adr-explainer skill</div>
+    <h1>Where Dev Mail Goes</h1>
+    <p class="standfirst">A decision record about outbound email, reduced to one page and one rule: only production is allowed to touch a real mailbox.</p>
+  </header>
+
+  <div class="tldr">
+    <p><strong>Production</strong> sends real email through Amazon SES.</p>
+    <p><strong>Development</strong> sends fake email to Mailpit, a throwaway inbox in Docker.</p>
+    <p>The dev tier holds <strong>no AWS credentials at all</strong>. That absence is what stops a dev build from mailing a real person.</p>
+  </div>
+
+  <section>
+    <div class="kicker">the question</div>
+    <h2>What does &ldquo;dev&rdquo; even mean for email?</h2>
+    <p>Setting up the AWS account that would send the app&rsquo;s mail forced a question nobody had answered yet.</p>
+    <p>Every other dependency has a dev copy. A dev database is easy — it is just another database. A dev <em>mail sender</em> is not, because mail leaves the building.</p>
+  </section>
+
+  <section>
+    <div class="kicker">the constraint</div>
+    <h2>The obvious plan rested on something that isn&rsquo;t true</h2>
+    <p>The obvious plan was to give dev its own SES user and keep that user in <strong>sandbox mode</strong> forever. Sandbox only lets you mail addresses you have verified in advance. It fails closed, so it looked like a good safety net.</p>
+    <p>But sandbox is not a property of a user. It is a property of <strong>an AWS account, in one region</strong>. Turn it off for production — which you must, to mail real people — and it is off for every key in that account.</p>
+
+    <figure>
+      <svg viewBox="0 0 760 226" role="img" aria-label="Comparison: the plan assumed a sandbox around the dev key only; in reality the sandbox wraps the whole AWS account and region, so removing it frees both keys at once.">
+        <text class="lbl-hd" x="0" y="14">What the plan assumed</text>
+        <rect class="frame" x="0.5" y="28" width="349" height="160" rx="6"></rect>
+        <text class="lbl-sm" x="14" y="47">one AWS account &middot; one region</text>
+        <rect class="ring" x="14" y="62" width="160" height="100" rx="5"></rect>
+        <text class="lbl-sm" x="94" y="154" text-anchor="middle" fill="var(--live)">sandbox</text>
+        <rect class="box" x="26" y="84" width="136" height="48" rx="4"></rect>
+        <text class="lbl" x="94" y="113" text-anchor="middle">dev key</text>
+        <rect class="box" x="196" y="84" width="136" height="48" rx="4"></rect>
+        <text class="lbl" x="264" y="113" text-anchor="middle">prod key</text>
+        <text class="lbl-sm" x="94" y="212" text-anchor="middle" fill="var(--sink)">can&rsquo;t reach strangers</text>
+        <text class="lbl-sm" x="264" y="212" text-anchor="middle" fill="var(--live)">can mail people</text>
+
+        <text class="lbl-hd" x="410" y="14">What AWS actually does</text>
+        <rect class="frame" x="410.5" y="28" width="349" height="160" rx="6"></rect>
+        <text class="lbl-sm" x="424" y="47">one AWS account &middot; one region</text>
+        <rect class="ring" x="422" y="56" width="326" height="118" rx="5"></rect>
+        <text class="lbl-sm" x="584" y="166" text-anchor="middle" fill="var(--live)">sandbox &mdash; one switch for the whole account</text>
+        <rect class="box" x="436" y="84" width="136" height="48" rx="4"></rect>
+        <text class="lbl" x="504" y="113" text-anchor="middle">dev key</text>
+        <rect class="box" x="606" y="84" width="136" height="48" rx="4"></rect>
+        <text class="lbl" x="674" y="113" text-anchor="middle">prod key</text>
+        <text class="lbl-sm" x="584" y="212" text-anchor="middle" fill="var(--live)">flip it for prod and both keys can mail people</text>
+      </svg>
+      <figcaption>The safety net was never around the dev key. It was around the account. Two other things scope the same way: only one inbound rule set can be active per account and region, and the bounce suppression list is shared too.</figcaption>
+    </figure>
+
+    <p>So this was never an IAM question. It is an <strong>account</strong> question, and that has only three answers.</p>
+  </section>
+
+  <section>
+    <div class="kicker">the options</div>
+    <h2>Three answers, one chosen</h2>
+    <div class="options">
+      <div class="option chosen">
+        <span class="letter">A</span>
+        <span class="headline">AWS for production only. Dev gets a fake mailbox.<span class="tag">chosen</span></span>
+        <span class="note">Dev holds nothing that could reach AWS. Cheapest, and it fits the seam we already built.</span>
+      </div>
+      <div class="option">
+        <span class="letter">B</span>
+        <span class="headline">Two AWS accounts, one per tier.</span>
+        <span class="note">The strongest isolation, and the only option where dev can receive real mail. Rejected on cost, not on merit — it is two of everything to create, bill and keep in sync. Recorded as the upgrade path: if dev ever needs real inbound, we replace this record rather than bend it.</span>
+      </div>
+      <div class="option">
+        <span class="letter">C</span>
+        <span class="headline">One account, dev in a second region.</span>
+        <span class="note">Looks like parity, isn&rsquo;t. Same account, so the same keys — and dev would run in a region production never uses, which hides exactly the mistakes dev is supposed to catch.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">the design</div>
+    <h2>One function, two adapters</h2>
+    <p>Every part of the app sends mail by calling one function, <code>sendEmail()</code>. Nothing else knows who delivers it. Swapping the delivery is exactly what that seam was built for.</p>
+
+    <figure>
+      <svg viewBox="0 0 760 276" role="img" aria-label="Both tiers call the same sendEmail function. The dev adapter sends to Mailpit, which forwards nothing outward. The prod adapter sends to Amazon SES, which delivers to real people.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--ink)"></path>
+          </marker>
+        </defs>
+
+        <text class="lbl-sm" x="240" y="36" text-anchor="middle" fill="var(--accent)">sendEmail()</text>
+        <line class="seam" x1="240" y1="50" x2="240" y2="246"></line>
+
+        <rect class="box" x="16" y="66" width="150" height="56" rx="4"></rect>
+        <text class="lbl" x="91" y="99" text-anchor="middle">dev tier</text>
+        <line class="flow" x1="166" y1="94" x2="260" y2="94" marker-end="url(#ah)"></line>
+        <text class="lbl-sm" x="213" y="86" text-anchor="middle">dev adapter</text>
+        <rect class="box" x="268" y="66" width="196" height="56" rx="4"></rect>
+        <text class="lbl" x="366" y="90" text-anchor="middle">Mailpit</text>
+        <text class="lbl-sm" x="366" y="107" text-anchor="middle">SMTP sink, in Docker</text>
+        <line class="flow-dead" x1="464" y1="94" x2="556" y2="94"></line>
+        <line class="flow-dead" x1="504" y1="86" x2="516" y2="102" stroke-dasharray="0"></line>
+        <line class="flow-dead" x1="516" y1="86" x2="504" y2="102" stroke-dasharray="0"></line>
+        <text class="lbl-sm" x="510" y="78" text-anchor="middle" fill="var(--live)">nothing leaves</text>
+        <rect x="562" y="66" width="182" height="56" rx="4" fill="none" stroke="var(--line)" stroke-dasharray="4 4"></rect>
+        <text class="lbl-sm" x="653" y="99" text-anchor="middle">the outside world</text>
+        <text class="lbl-sm" x="16" y="146">no AWS credentials exist in this tier</text>
+
+        <rect class="box" x="16" y="180" width="150" height="56" rx="4"></rect>
+        <text class="lbl" x="91" y="213" text-anchor="middle">prod tier</text>
+        <line class="flow" x1="166" y1="208" x2="260" y2="208" marker-end="url(#ah)"></line>
+        <text class="lbl-sm" x="213" y="200" text-anchor="middle">SES adapter</text>
+        <rect class="box" x="268" y="180" width="196" height="56" rx="4"></rect>
+        <text class="lbl" x="366" y="204" text-anchor="middle">Amazon SES</text>
+        <text class="lbl-sm" x="366" y="221" text-anchor="middle">prod region</text>
+        <line class="flow" x1="464" y1="208" x2="556" y2="208" marker-end="url(#ah)"></line>
+        <text class="lbl-sm" x="510" y="200" text-anchor="middle">delivers</text>
+        <rect class="box" x="562" y="180" width="182" height="56" rx="4"></rect>
+        <text class="lbl" x="653" y="213" text-anchor="middle">real people</text>
+        <text class="lbl-sm" x="16" y="260">credentials: an encrypted secret, prod namespace only</text>
+      </svg>
+      <figcaption>Mailpit accepts every message and forwards none of them. Developers open its web inbox to check that the templates, the links and the reply address all render correctly — which is the whole reason dev needs mail at all.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="kicker">the guardrails</div>
+    <h2>Two mistakes we refuse to allow</h2>
+    <p>A dev build that mails real people. A prod build that quietly drops every message into a sink. Both are stopped by failing loudly, not by good intentions.</p>
+    <ul>
+      <li><strong>Dev holds no AWS credentials.</strong> Not a policy someone can get wrong — an absence. There is nothing for a misconfiguration to pick up.</li>
+      <li><strong>The provider is set explicitly, with no default.</strong> Unset or unrecognised means the app refuses to boot. A default is how the wrong provider gets picked in the environment nobody checked.</li>
+      <li><strong>Boot checks the two against each other.</strong> Any AWS credential present means the provider must be SES. Mailpit plus any AWS credential refuses to start. The credentials and the provider setting live in different files, so this is a real cross-check.</li>
+      <li><strong><code>NODE_ENV</code> is deliberately not the switch.</strong> The Dockerfile hardcodes it to <code>production</code> and one image ships to both tiers, so it reads <code>production</code> in dev too.</li>
+      <li><strong>Prod secrets use their own encryption key.</strong> Dev&rsquo;s key cannot decrypt them.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="kicker">inbound</div>
+    <h2>Dev receives no mail either</h2>
+    <p>Dev publishes no MX record and runs no receipt rules. Nobody can send it anything.</p>
+    <p>The webhook that handles incoming mail is tested with <strong>synthetic fixtures</strong> instead. Each one is re-signed at test time with a local test key, so the real signature verifier runs for real rather than being stubbed out. There are negative fixtures for each control it enforces — a lookalike certificate host, an old signature version, an unknown topic, a signature made with the wrong key.</p>
+    <p>The production topic is never pointed at dev. That is the obvious shortcut, and it would carry real mail into a tier that is assumed to hold none.</p>
+  </section>
+
+  <section>
+    <div class="kicker">the trade</div>
+    <h2>What we gave up, and where we make it back</h2>
+    <p>Dev never touches the real SES path. A DKIM record, an IAM policy or a region mistake will not surface in dev. That is a genuine loss and it is worth naming.</p>
+    <p>The answer is that <strong>the production account&rsquo;s own sandbox is the integration environment</strong>. We prove the real path there — sending, the denied-send checks, the bucket permissions, the retention rule — <em>before</em> asking AWS for production access. While it is still in sandbox, a mistake reaches a developer&rsquo;s own inbox rather than a stranger.</p>
+    <p>There is no staging account, and none is wanted.</p>
+  </section>
+
+  <section>
+    <div class="kicker">still open</div>
+    <h2>Honest loose ends</h2>
+    <div class="panel">
+      <h3>Dev&rsquo;s namespace has no outbound network policy</h3>
+      <p>Checked and confirmed absent. Until it lands, containment of the dev tier rests on the missing credentials alone. Raised as a follow-up issue.</p>
+    </div>
+    <div class="panel">
+      <h3>Mailpit is an unauthenticated store of real-looking data</h3>
+      <p>It keeps whole messages, including any real-looking links they contain. So: its UI requires a login, retention is capped, and production data is never restored into dev.</p>
+    </div>
+    <div class="panel">
+      <h3>The DMARC report address isn&rsquo;t chosen</h3>
+      <p>It needs a real mailbox that accepts SMTP, and it can&rsquo;t be either of our mail hosts. Terraform omits the tag entirely until one exists — an empty value is worse than none. Enforcement doesn&rsquo;t depend on it; only visibility does.</p>
+    </div>
+  </section>
+
+  <footer>
+    This is a worked example for the <span class="mono">adr-explainer</span> skill — illustrative, not a real project record. A real explainer&rsquo;s footer names the record&rsquo;s file path in <span class="mono">architecture/adr/</span> and states plainly that the record, not this page, is the authority.
+  </footer>
+
+</div>

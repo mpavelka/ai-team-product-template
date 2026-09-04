@@ -15,6 +15,7 @@ architecture/interfaces/         interfaces between components, YAML
 .claude/skills/                  the three roles you act as, in the conversation
 .claude/agents/                  the three sub-agents you spawn for independent review
 .claude/skills/records-query/    query the registers from the CLI
+.claude/skills/adr-explainer/    turn a record into a short plain-language page
 ```
 
 Every register ships a `TEMPLATE.*.example` file next to the records documenting its

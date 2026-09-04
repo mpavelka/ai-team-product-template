@@ -69,3 +69,9 @@ python3 .claude/skills/records-query/scripts/records_query.py adr --where status
 ```
 
 Its tests: `python3 -m unittest discover -s .claude/skills/records-query/tests`
+
+Records are long on purpose — they carry the argument, the rejected options and the
+accepted risks, not just the outcome. When a record needs to be *read* rather than
+queried, the `adr-explainer` skill turns one into a short plain-language page with a
+diagram or two, published as an Artifact. It is read-only against the registers, and the
+record stays the authority.
